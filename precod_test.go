@@ -27,7 +27,7 @@ func TestMainHandlerStatus(t *testing.T) {
 
 	assert.NotEmpty(
 		t,
-		responseRecorder.Body.String(),
+		responseRecorder.Body,
 		"expected body: Should NOT be empty, got empty",
 	)
 }
@@ -62,6 +62,13 @@ func TestMainHandlerCountCafe(t *testing.T) {
 	responseRecorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(mainHandle)
 	handler.ServeHTTP(responseRecorder, req)
+
+	require.Equal(
+		t,
+		http.StatusOK,
+		responseRecorder.Code,
+		fmt.Sprintf("expected status code: %d, got %d", http.StatusOK, responseRecorder.Code),
+	)
 
 	cityes := strings.Split(responseRecorder.Body.String(), ",")
 
